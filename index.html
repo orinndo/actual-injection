@@ -3,25 +3,28 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>テスト注入（Test Injection）音声ガイド</title>
+<title>撮影本番（Injection）音声ガイド</title>
 <style>
   :root {
     --border:#d9d9d9;
+    --text:#111;
     --muted:#666;
-    --btn:#eef3ff;
-    --btn2:#f3f3f3;
+    --bg:#fff;
+    --chip:#f5f5f7;
+    --btn:#ffffff;
+    --shadow: 0 1px 2px rgba(0,0,0,.06);
+    --radius: 16px;
   }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Segoe UI", Roboto, "Noto Sans JP", "Noto Sans", Arial, sans-serif;
     margin: 18px;
     line-height: 1.6;
-    background: #fff;
-    color: #111;
+    color: var(--text);
+    background: var(--bg);
   }
   h1 {
     margin: 0 0 6px;
-    font-size: 28px;
-    font-weight: 800;
+    font-size: 24px;
     letter-spacing: .2px;
   }
   .note {
@@ -31,92 +34,114 @@
   }
   .panel {
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius);
     padding: 16px;
+    box-shadow: var(--shadow);
     max-width: 980px;
-    background: #fff;
-    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  }
+  .toprow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
   .chip {
-    display:inline-block;
-    background:#f5f5f5;
-    color:#333;
-    border:1px solid #ededed;
-    border-radius: 999px;
+    background: var(--chip);
+    border: 1px solid var(--border);
     padding: 8px 12px;
+    border-radius: 999px;
     font-size: 14px;
-    margin-bottom: 10px;
+    color: #333;
   }
   .row {
     display:flex;
-    gap:10px;
+    gap:12px;
     align-items:center;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
+    margin: 10px 0 12px;
   }
   select {
     flex: 1 1 520px;
-    padding: 10px 12px;
-    font-size: 16px;
+    min-width: 260px;
+    padding: 12px 12px;
     border: 1px solid var(--border);
     border-radius: 12px;
+    font-size: 16px;
     background: #fff;
   }
   .navbtn {
     padding: 10px 14px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    background: #fff;
-    font-size: 14px;
+    background: var(--btn);
+    font-size: 16px;
+    cursor: pointer;
   }
-  .navbtn:disabled { opacity: .45; }
+  .navbtn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
   .sectionlabel {
-    margin-top: 14px;
+    margin: 12px 0 6px;
     font-size: 13px;
     color: var(--muted);
   }
-  .jp {
-    margin-top: 6px;
-    font-size: 22px;
+  .jptext {
+    font-size: 26px;
     font-weight: 700;
+    margin: 0 0 10px;
   }
-  .en {
-    margin-top: 6px;
-    font-size: 18px;
+  .entext {
+    font-size: 20px;
+    margin: 0 0 12px;
   }
-  .controls {
-    margin-top: 10px;
+  .btnrow {
     display:flex;
-    gap:10px;
-    flex-wrap:wrap;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 6px 0 10px;
   }
-  .btn {
-    border: 1px solid var(--border);
-    border-radius: 14px;
+  .playbtn {
     padding: 12px 16px;
-    background: #fff;
-    font-size: 15px;
-    min-width: 160px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #f0f6ff;
+    font-size: 16px;
+    cursor:pointer;
   }
-  .btn.primary {
+  .ghostbtn {
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
     background: var(--btn);
-    border-color: #d7e4ff;
+    font-size: 16px;
+    cursor:pointer;
   }
-  .btn.gray { background: var(--btn2); }
   .status {
-    margin-top: 10px;
-    font-size: 14px;
+    margin: 8px 0 6px;
     color: var(--muted);
+    font-size: 14px;
   }
-  audio { margin-top: 10px; width: 100%; }
-  .foot { margin-top: 8px; color: var(--muted); font-size: 13px; }
+  audio {
+    width: 100%;
+    margin-top: 6px;
+  }
+  .hint {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+  }
 </style>
 </head>
 <body>
-  <h1>テスト注入（Test Injection） 音声ガイド</h1>
+  <h1>撮影本番（Injection） 音声ガイド</h1>
   <p class="note">※必ず GitHub Pages（https://○○.github.io/...）のURLで開いてください。iPhoneでは自動再生できないため、下の再生ボタンを押してください。</p>
 
   <div class="panel">
-    <div class="chip">ステップ選択</div>
+    <div class="toprow">
+      <div class="chip">ステップ選択</div>
+    </div>
 
     <div class="row">
       <select id="stepSelect" aria-label="ステップ選択"></select>
@@ -125,103 +150,116 @@
     </div>
 
     <div class="sectionlabel">日本語（内容）</div>
-    <div id="jp" class="jp">—</div>
+    <div class="jptext" id="jpText"></div>
 
     <div class="sectionlabel">English（Script）</div>
-    <div id="en" class="en">—</div>
+    <div class="entext" id="enText"></div>
 
-    <div class="controls">
-      <button class="btn primary" id="playBtn" type="button">▶ 再生 / Play</button>
-      <button class="btn gray" id="pauseBtn" type="button">⏸ 一時停止 / Pause</button>
-      <button class="btn" id="replayBtn" type="button">↺ もう一度 / Replay</button>
+    <div class="btnrow">
+      <button class="playbtn" id="playBtn" type="button">▶ 再生 / Play</button>
+      <button class="ghostbtn" id="pauseBtn" type="button">⏸ 一時停止 / Pause</button>
+      <button class="ghostbtn" id="replayBtn" type="button">↻ もう一度 / Replay</button>
     </div>
 
     <div class="status" id="status">待機中 / Ready</div>
-    <audio id="audio" controls preload="none"></audio>
-    <div class="foot">再生されない場合は、下のコントロール（▶）からも再生できます。</div>
+
+    <audio id="audio" controls preload="metadata">
+      <source id="audioSrc" src="" type="audio/mpeg">
+      お使いのブラウザでは音声を再生できません。
+    </audio>
+
+    <div class="hint">再生されない場合は、上のコントロール（▶）からも再生できます。</div>
   </div>
 
 <script>
-const STEPS = [{"num": "01", "title_jp": "両腕を頭の上に上げてください。", "jp": "両腕を頭の上に上げてください。", "en": "Please raise your arms above your head."}, {"num": "02", "title_jp": "右腕は肘を曲げずにまっすぐにしてください。", "jp": "右腕は肘を曲げずに、できるだけまっすぐにしてください。", "en": "Please try to keep your right arm straight without bending the elbow."}, {"num": "03", "title_jp": "左腕は肘を曲げずにまっすぐにしてください。", "jp": "左腕は肘を曲げずに、できるだけまっすぐにしてください。", "en": "Please try to keep your left arm straight without bending the elbow."}, {"num": "04", "title_jp": "本番と同じ速さでテスト注入をします。", "jp": "問題がないか確認するため、本番の造影剤注入と同じ速さでテスト注入を行います。", "en": "Just to make sure everything’s okay, we’re going to do a test injection at the same speed as the actual contrast dye injection."}, {"num": "05", "title_jp": "痛かったら教えてください。", "jp": "痛みがあれば、すぐに教えてください。", "en": "Please let me know if it hurts."}, {"num": "06", "title_jp": "これからテスト注入を始めます。", "jp": "これからテスト注入を始めます。", "en": "We’re starting the test injection now."}, {"num": "07", "title_jp": "痛みはありましたか？", "jp": "痛みはありましたか？", "en": "Did you feel any pain?"}, {"num": "08", "title_jp": "これから本番の注入を始めます。", "jp": "それでは、これから本番の注入を始めます。", "en": "We’ll start the actual injection."}];
+  const steps = [{"id": 1, "jp": "これから造影剤を注入します。", "en": "We're going to inject the contrast dye soon."}, {"id": 2, "jp": "気分が悪くなったら、すぐにお知らせください。", "en": "If you feel sick, please let us know right away."}, {"id": 3, "jp": "今から注入を開始します。痛みはありませんか？気分はいかがですか？", "en": "Starting the injection now. Did you feel any pain? How are you feeling?"}, {"id": 4, "jp": "だんだん体が温かく感じてきます。", "en": "You'll start to feel warm gradually."}, {"id": 5, "jp": "「息を止めてください」の指示のあと、すぐに撮影が始まります。", "en": "After you hear the instruction to hold your breath, the scan will start right away."}, {"id": 6, "jp": "約1分後にもう一度撮影します。気分はいかがですか？", "en": "In about one minute, we're going to take another scan. How are you feeling?"}, {"id": 7, "jp": "温かい感じは数分でおさまります。", "en": "The warm sensation will go away in a few minutes."}];
+  const audio = document.getElementById('audio');
+  const audioSrc = document.getElementById('audioSrc');
+  const stepSelect = document.getElementById('stepSelect');
+  const jpText = document.getElementById('jpText');
+  const enText = document.getElementById('enText');
+  const statusEl = document.getElementById('status');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-let currentIndex = 0;
-const sel = document.getElementById('stepSelect');
-const jp = document.getElementById('jp');
-const en = document.getElementById('en');
-const audio = document.getElementById('audio');
-const statusEl = document.getElementById('status');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-
-function setStatus(t) {
-  statusEl.textContent = t;
-}
-
-function buildSelect() {
-  sel.innerHTML = '';
-  STEPS.forEach((s, i) => {
+  // Populate dropdown (数字の順番通り)
+  steps.forEach(s => {
     const opt = document.createElement('option');
-    opt.value = String(i);
-    opt.textContent = `${s.num}. ${s.title_jp}`;
-    sel.appendChild(opt);
+    opt.value = s.id;
+    opt.textContent = String(s.id).padStart(2,'0') + '. ' + s.jp;
+    stepSelect.appendChild(opt);
   });
-}
 
-function updateNavButtons() {
-  prevBtn.disabled = (currentIndex === 0);
-  nextBtn.disabled = (currentIndex === STEPS.length - 1);
-}
+  function setStatus(msg) {
+    statusEl.textContent = msg;
+  }
 
-function loadStep(i) {
-  currentIndex = i;
-  sel.value = String(i);
-  jp.textContent = STEPS[i].jp;
-  en.textContent = STEPS[i].en;
+  function loadStep(id) {
+    const idx = steps.findIndex(s => s.id === id);
+    const s = steps[idx];
+    jpText.textContent = s.jp;
+    enText.textContent = s.en;
 
-  const num = STEPS[i].num;
-  audio.pause();
-  audio.innerHTML = '';
+    // audio file
+    const file = 'audio/' + String(s.id).padStart(2,'0') + '.mp3';
+    audio.pause();
+    audio.currentTime = 0;
+    audioSrc.src = file;
+    audio.load();
 
-  // MP3 first for Android, then M4A for iPhone/Safari
-  const s1 = document.createElement('source');
-  s1.src = `audio/${num}.mp3`;
-  s1.type = 'audio/mpeg';
-  const s2 = document.createElement('source');
-  s2.src = `audio/${num}.m4a`;
-  s2.type = 'audio/mp4';
+    // nav enable/disable
+    prevBtn.disabled = (idx <= 0);
+    nextBtn.disabled = (idx >= steps.length - 1);
+    setStatus('待機中 / Ready');
+  }
 
-  audio.appendChild(s1);
-  audio.appendChild(s2);
-  audio.load();
+  // Button handlers
+  document.getElementById('playBtn').addEventListener('click', async () => {
+    try {
+      await audio.play();
+    } catch (e) {
+      // iOS/Android may block without user gesture; button click is a gesture, so usually ok.
+      console.log(e);
+    }
+  });
+  document.getElementById('pauseBtn').addEventListener('click', () => audio.pause());
+  document.getElementById('replayBtn').addEventListener('click', async () => {
+    audio.currentTime = 0;
+    try {
+      await audio.play();
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
-  setStatus('待機中 / Ready');
-  updateNavButtons();
-}
+  stepSelect.addEventListener('change', () => {
+    loadStep(parseInt(stepSelect.value, 10));
+  });
+  prevBtn.addEventListener('click', () => {
+    const cur = parseInt(stepSelect.value, 10);
+    loadStep(cur - 1);
+    stepSelect.value = String(cur - 1);
+  });
+  nextBtn.addEventListener('click', () => {
+    const cur = parseInt(stepSelect.value, 10);
+    loadStep(cur + 1);
+    stepSelect.value = String(cur + 1);
+  });
 
-document.getElementById('playBtn').addEventListener('click', () => {
-  audio.play().then(()=>setStatus('再生中 / Playing')).catch(()=>setStatus('再生ボタンをもう一度押してください / Tap Play again'));
-});
-document.getElementById('pauseBtn').addEventListener('click', () => {
-  audio.pause();
-  setStatus('一時停止 / Paused');
-});
-document.getElementById('replayBtn').addEventListener('click', () => {
-  audio.currentTime = 0;
-  audio.play().then(()=>setStatus('再生中 / Playing')).catch(()=>setStatus('再生ボタンをもう一度押してください / Tap Play again'));
-});
+  // Audio status
+  audio.addEventListener('play', () => setStatus('再生中 / Playing'));
+  audio.addEventListener('pause', () => {
+    if (audio.currentTime === 0 || audio.ended) {
+      setStatus('待機中 / Ready');
+    } else {
+      setStatus('一時停止 / Paused');
+    }
+  });
+  audio.addEventListener('ended', () => setStatus('再生終了 / Finished'));
 
-sel.addEventListener('change', (e) => loadStep(Number(e.target.value)));
-prevBtn.addEventListener('click', () => { if (currentIndex > 0) loadStep(currentIndex - 1); });
-nextBtn.addEventListener('click', () => { if (currentIndex < STEPS.length - 1) loadStep(currentIndex + 1); });
-
-audio.addEventListener('ended', () => setStatus('完了 / Done'));
-audio.addEventListener('play', () => setStatus('再生中 / Playing'));
-audio.addEventListener('pause', () => {
-  if (audio.currentTime > 0 && audio.currentTime < (audio.duration || 9999)) setStatus('一時停止 / Paused');
-});
-
-buildSelect();
-loadStep(0);
+  // Initial
+  stepSelect.value = "1";
+  loadStep(1);
 </script>
 </body>
 </html>
