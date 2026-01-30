@@ -24,9 +24,25 @@ button:active{transform:scale(.98);}
 audio{width:100%;margin-top:10px;}
 .status{margin-top:8px;font-size:13px;color:#475569;}
 .hint{margin-top:10px;font-size:12px;color:#64748b;}
+
+/* === Emergency Button (Main Scan only) === */
+.fab-emg{position:fixed;right:16px;bottom:16px;z-index:10000;
+background:#fff1f2;border:1px solid #fecaca;color:#9f1239;
+border-radius:999px;padding:12px 14px;font-weight:800}
+.emg-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
+z-index:9998;display:none}
+.emg-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+display:none;padding:12px}
+.emg-panel{max-width:720px;margin:0 auto;background:#fff;
+border-radius:18px;padding:14px}
+.emg-item{border:1px solid #e2e8f0;border-radius:14px;
+padding:10px;margin-bottom:8px}
+.emg-jp{font-weight:700;font-size:16px}
+.emg-en{font-size:13px;color:#475569}
+
 </style>
 </head>
-<body>
+<body data-page="main-scan">
 <div class="header">
   <div class="frame-title">
     <h1>撮影本番（Main Scan）</h1>
@@ -106,6 +122,49 @@ player.onplay=()=>status.textContent="再生中 / Playing";
 player.onpause=()=>status.textContent="一時停止 / Paused";
 player.onended=()=>status.textContent="待機中 / Ready";
 load(0);
+
+document.addEventListener('DOMContentLoaded',()=>{
+ if(document.body.dataset.page!=='main-scan')return;
+
+ const EMG=[
+  {jp:'聞こえますか？意識ははっきりしていますか？',en:'Can you hear me? Are you okay?',a:'audio/emergency_01.m4a'},
+  {jp:'息苦しさはありますか？',en:'Are you having difficulty breathing?',a:'audio/emergency_02.m4a'},
+  {jp:'どこか痒みはありますか？',en:'Do you feel itchy anywhere?',a:'audio/emergency_03.m4a'},
+  {jp:'めまいやふらつきはありますか？',en:'Do you feel dizzy or lightheaded?',a:'audio/emergency_04.m4a'},
+  {jp:'吐き気や、吐きそうな感じはありますか？',en:'Do you have nausea or feel like vomiting?',a:'audio/emergency_05.m4a'},
+  {jp:'喉が締め付けられる感じ、または詰まる感じはありますか？',en:'Does your throat feel tight?',a:'audio/emergency_06.m4a'}
+ ];
+
+ const open=document.getElementById('emgOpen');
+ const back=document.getElementById('emgBackdrop');
+ const sheet=document.getElementById('emgSheet');
+ const list=document.getElementById('emgList');
+ const player=document.getElementById('emgPlayer');
+ const close=document.getElementById('emgClose');
+
+ EMG.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='emg-item';
+  d.innerHTML=`<div class="emg-jp">${i+1}. ${s.jp}</div>
+               <div class="emg-en">${s.en}</div>`;
+  d.onclick=()=>{player.src=s.a;player.play();}
+  list.appendChild(d);
+ });
+
+ open.onclick=()=>{back.style.display='block';sheet.style.display='block'};
+ back.onclick=close.onclick=()=>{back.style.display='none';sheet.style.display='none'};
+});
+
 </script>
+
+<button class="fab-emg" id="emgOpen">⚠ 急変時確認</button>
+<div class="emg-backdrop" id="emgBackdrop"></div>
+<div class="emg-sheet" id="emgSheet">
+  <div class="emg-panel">
+    <div id="emgList"></div>
+    <audio id="emgPlayer" controls style="width:100%"></audio>
+    <button id="emgClose">閉じる</button>
+  </div>
+</div>
+
 </body>
 </html>
